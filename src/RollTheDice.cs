@@ -126,12 +126,15 @@ namespace RollTheDice
             {
                 return HookResult.Continue;
             }
-            // announce round start (in each player's language)
-            foreach (CCSPlayerController player in Utilities.GetPlayers())
+            // announce round start (in each player's language), unless everyone rolls automatically anyway
+            if (!Config.DiceTrigger.ForceAllPlayers && !Config.Admin.MirrorTeams)
             {
-                if (player.IsValid && !player.IsBot && !player.IsHLTV)
+                foreach (CCSPlayerController player in Utilities.GetPlayers())
                 {
-                    player.PrintToChat(Text(player, "core.announcement"));
+                    if (player.IsValid && !player.IsBot && !player.IsHLTV)
+                    {
+                        player.PrintToChat(Text(player, "core.announcement"));
+                    }
                 }
             }
             // allow dice rolls
